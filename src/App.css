@@ -772,7 +772,7 @@ button.secondary {
 }
 
 .service-top-kpi-primary {
-  padding: 3px 7px;
+  padding: 3px 6px;
   border: 1px solid #0b0b0b;
   background: #202020;
   box-shadow: inset 0 0 0 1px #4b4b4b;
@@ -783,6 +783,7 @@ button.secondary {
 }
 
 .service-top-kpi,
+.service-primary-tab,
 .service-month-tabs button,
 .service-year-tabs button,
 .service-region-filter button,
@@ -806,9 +807,18 @@ button.secondary {
   font-size: 0.62rem;
 }
 
-.service-top-kpi-primary .service-top-kpi {
-  flex-basis: 58px;
-  width: 58px;
+.service-primary-tab {
+  flex: 0 0 auto;
+  min-width: 34px;
+  min-height: 36px;
+  padding: 3px 8px;
+  font-size: 0.72rem;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.service-primary-tab.active {
+  background: #050505;
 }
 
 .service-top-kpi:not(.active) {

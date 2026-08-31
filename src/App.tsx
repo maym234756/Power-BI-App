@@ -93,6 +93,11 @@ type ServiceKpi = {
   active?: boolean
 }
 
+type ServicePrimaryTab = {
+  label: string
+  active?: boolean
+}
+
 type ServiceMetricOption = {
   label: string
   value: string
@@ -141,6 +146,14 @@ const metricTiles = [
   { label: 'Profit', value: '2.4M' },
 ]
 
+const servicePrimaryTabs: ServicePrimaryTab[] = [
+  { label: 'R', active: true },
+  { label: 'W' },
+  { label: 'I' },
+  { label: 'Rec' },
+  { label: 'CN' },
+]
+
 const serviceMetricOptions: ServiceMetricOption[] = [
   { label: 'RO#', value: '3K' },
   { label: 'Hours', value: '13K' },
@@ -162,8 +175,6 @@ const serviceMetricOptions: ServiceMetricOption[] = [
 ]
 
 const serviceTopKpis: ServiceKpi[] = [
-  { label: 'E', value: '1.6M', active: true },
-  { label: 'I', value: '1.5M' },
   { label: 'AL', value: '128K' },
   { label: 'ETX', value: '455K' },
   { label: 'MS', value: '375K' },
@@ -225,19 +236,18 @@ function ServiceMetricsDashboard() {
         <h2>Service</h2>
         <div className="service-top-kpis" aria-label="Service store totals">
           <div className="service-top-kpi-group service-top-kpi-primary">
-            {serviceTopKpis.slice(0, 2).map((kpi) => (
+            {servicePrimaryTabs.map((tab) => (
               <button
                 type="button"
-                className={kpi.active ? 'service-top-kpi active' : 'service-top-kpi'}
-                key={kpi.label}
+                className={tab.active ? 'service-primary-tab active' : 'service-primary-tab'}
+                key={tab.label}
               >
-                <strong>{kpi.label}</strong>
-                <span>{kpi.value}</span>
+                {tab.label}
               </button>
             ))}
           </div>
           <div className="service-top-kpi-group service-top-kpi-stores">
-            {serviceTopKpis.slice(2).map((kpi) => (
+            {serviceTopKpis.map((kpi) => (
               <button
                 type="button"
                 className={kpi.active ? 'service-top-kpi active' : 'service-top-kpi'}
