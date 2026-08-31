@@ -224,16 +224,30 @@ function ServiceMetricsDashboard() {
         </div>
         <h2>Service</h2>
         <div className="service-top-kpis" aria-label="Service store totals">
-          {serviceTopKpis.map((kpi) => (
-            <button
-              type="button"
-              className={kpi.active ? 'service-top-kpi active' : 'service-top-kpi'}
-              key={kpi.label}
-            >
-              <strong>{kpi.label}</strong>
-              <span>{kpi.value}</span>
-            </button>
-          ))}
+          <div className="service-top-kpi-group service-top-kpi-primary">
+            {serviceTopKpis.slice(0, 2).map((kpi) => (
+              <button
+                type="button"
+                className={kpi.active ? 'service-top-kpi active' : 'service-top-kpi'}
+                key={kpi.label}
+              >
+                <strong>{kpi.label}</strong>
+                <span>{kpi.value}</span>
+              </button>
+            ))}
+          </div>
+          <div className="service-top-kpi-group service-top-kpi-stores">
+            {serviceTopKpis.slice(2).map((kpi) => (
+              <button
+                type="button"
+                className={kpi.active ? 'service-top-kpi active' : 'service-top-kpi'}
+                key={kpi.label}
+              >
+                <strong>{kpi.label}</strong>
+                <span>{kpi.value}</span>
+              </button>
+            ))}
+          </div>
         </div>
         <div className="service-month-tabs" aria-label="Service month filters">
           {serviceMonths.map((month) => (
