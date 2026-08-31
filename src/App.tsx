@@ -63,7 +63,21 @@ type ConnectionConfig = {
   tenantId: string
 }
 
-const departmentTabs = [
+type DepartmentName = 'Parts' | 'Service' | 'Technicians'
+
+type DepartmentItem = {
+  label: string
+  targetName?: string
+  kind?: PowerBiContent['kind']
+}
+
+type DepartmentTab = {
+  name: DepartmentName
+  summary: string
+  items: DepartmentItem[]
+}
+
+const departmentTabs: DepartmentTab[] = [
   {
     name: 'Parts',
     summary: 'Inventory, backorders, sales, turns, and margin checkpoints.',
@@ -94,9 +108,7 @@ const departmentTabs = [
       { label: 'Clocked time' },
     ],
   },
-] as const
-
-type DepartmentName = (typeof departmentTabs)[number]['name']
+]
 
 function getInitialConfig(): ConnectionConfig {
   return {
@@ -180,6 +192,19 @@ function App() {
     (department) => department.name === activeDepartment,
   )
   const canConnect = Boolean(config.clientId)
+
+  function findContentForItem(item?: DepartmentItem) {
+    if (!item?.targetName) {
+      return undefined
+    }
+
+    const targetName = item.targetName.toLocaleLowerCase()
+    return contentItems.find(
+      (content) =>
+        content.kind === item.kind &&
+        content.name.toLocaleLowerCase() === targetName,
+    )
+  }
 
   useEffect(() => {
     if (!config.clientId) {
@@ -302,7 +327,10 @@ function App() {
 
         const loadedDashboards = dashboardsResponse.value
         const loadedReports = reportsResponse.value
-        const firstDashboard = loadedDashboards[0]
+        const partsDashboard = loadedDashboards.find(
+          (dashboard) => dashboard.displayName.toLocaleLowerCase() === 'parts inventory',
+        )
+        const firstDashboard = partsDashboard ?? loadedDashboards[0]
         const firstReport = loadedReports[0]
 
         setDashboards(loadedDashboards)
@@ -414,10 +442,7 @@ function App() {
     setStatus('Signed out.')
   }
 
-  function chooseDepartment(
-    departmentName: DepartmentName,
-    item?: { label: string; targetName?: string; kind?: PowerBiContent['kind'] },
-  ) {
+  function chooseDepartment(departmentName: DepartmentName, item?: DepartmentItem) {
     setActiveDepartment(departmentName)
     setOpenDepartment(null)
     if (!item?.targetName) {
@@ -425,11 +450,7 @@ function App() {
       return
     }
 
-    const matchingContent = contentItems.find(
-      (content) =>
-        content.kind === item.kind &&
-        content.name.toLocaleLowerCase() === item.targetName?.toLocaleLowerCase(),
-    )
+    const matchingContent = findContentForItem(item)
 
     if (!matchingContent) {
       setStatus(`${item.targetName} was not found in ${targetWorkspaceName}.`)
@@ -484,11 +505,14 @@ function App() {
                     {department.items.map((item) => (
                       <button
                         type="button"
-                        className="menu-item"
+                        className={
+                          findContentForItem(item) ? 'menu-item connected' : 'menu-item pending'
+                        }
                         key={item.label}
                         onClick={() => chooseDepartment(department.name, item)}
                       >
-                        {item.label}
+                        <span>{item.label}</span>
+                        <span>{item.targetName ? 'Connected' : 'Design next'}</span>
                       </button>
                     ))}
                   </div>

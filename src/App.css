@@ -126,7 +126,8 @@
 
 .menu-item {
   min-height: 36px;
-  justify-content: flex-start;
+  justify-content: space-between;
+  gap: 12px;
   color: var(--ink);
   background: #edf3f2;
   font-weight: 700;
@@ -135,6 +136,21 @@
 .menu-item:hover {
   color: #ffffff;
   background: #0f5f6f;
+}
+
+.menu-item span:last-child {
+  color: var(--steel);
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.menu-item.connected span:last-child {
+  color: var(--green);
+}
+
+.menu-item:hover span:last-child {
+  color: #ffffff;
 }
 
 .department-summary {
