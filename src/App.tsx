@@ -110,8 +110,6 @@ const departmentTabs: DepartmentTab[] = [
   },
 ]
 
-const topNavigation = ['All', 'Parts', 'Service']
-
 const dealerTiles = ['PBC', 'OMG', 'LCN', 'AL', 'ETX', 'MS', 'STX']
 
 const metricTiles = [
@@ -199,6 +197,7 @@ function App() {
     label: 'Parts Inventory',
   })
   const [openDepartment, setOpenDepartment] = useState<DepartmentName | null>(null)
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false)
   const embedContainerRef = useRef<HTMLDivElement | null>(null)
   const powerBiServiceRef = useRef<service.Service | null>(null)
 
@@ -497,15 +496,72 @@ function App() {
   }
 
   return (
-    <main className="app-shell">
-      <nav className="top-ribbon" aria-label="Primary app areas">
-        {topNavigation.map((item) => (
-          <span className={item === activeDepartment ? 'top-link active' : 'top-link'} key={item}>
-            {item}
-          </span>
-        ))}
-      </nav>
+    <main className={isSidebarCollapsed ? 'app-shell sidebar-collapsed' : 'app-shell'}>
+      <aside className="side-nav" aria-label="Parts and Service navigation">
+        <button
+          type="button"
+          className="collapse-button"
+          aria-label={isSidebarCollapsed ? 'Expand navigation' : 'Collapse navigation'}
+          onClick={() => setIsSidebarCollapsed((isCollapsed) => !isCollapsed)}
+        >
+          {isSidebarCollapsed ? '>' : '<<'}
+        </button>
 
+        <div className="side-brand">
+          <span className="side-logo">PBC</span>
+          <strong>Premier Yamaha</strong>
+          <span>{targetAppName}</span>
+        </div>
+
+        <nav className="side-tabs" aria-label="App tabs">
+          {departmentTabs.map((department) => {
+            const isOpen = openDepartment === department.name
+            const isActive = activeDepartment === department.name
+
+            return (
+              <div className="side-tab-group" key={department.name}>
+                <button
+                  type="button"
+                  className={isActive ? 'side-tab active' : 'side-tab'}
+                  data-short-label={department.name.slice(0, 1)}
+                  aria-expanded={isOpen}
+                  aria-controls={`${department.name.toLowerCase()}-side-menu`}
+                  onClick={() => {
+                    setActiveDepartment(department.name)
+                    setSelectedRoute({ department: department.name, label: department.name })
+                    setOpenDepartment(isOpen ? null : department.name)
+                  }}
+                >
+                  <span>{department.name}</span>
+                  <span aria-hidden="true">v</span>
+                </button>
+
+                {isOpen && !isSidebarCollapsed && (
+                  <div className="side-subnav" id={`${department.name.toLowerCase()}-side-menu`}>
+                    {department.items.map((item) => (
+                      <button
+                        type="button"
+                        className={
+                          selectedRoute.label === item.label ? 'side-subtab active' : 'side-subtab'
+                        }
+                        key={item.label}
+                        onClick={() => chooseDepartment(department.name, item)}
+                      >
+                        <span>{item.label}</span>
+                        <span>{item.targetName ? 'Live' : 'Draft'}</span>
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )
+          })}
+        </nav>
+
+        <div className="side-footer">Miles May workspace</div>
+      </aside>
+
+      <div className="app-content">
       <section className="masthead">
         <div>
           <p className="eyebrow">Premier Boat Center</p>
@@ -536,52 +592,6 @@ function App() {
           </span>
         ))}
       </section>
-
-      <nav className="department-tabs" aria-label="Parts and service app sections">
-        {departmentTabs.map((department) => {
-          const isOpen = openDepartment === department.name
-          const isActive = activeDepartment === department.name
-
-          return (
-            <div className="department-tab" key={department.name}>
-              <button
-                type="button"
-                className={isActive ? 'department-button active' : 'department-button'}
-                aria-expanded={isOpen}
-                aria-controls={`${department.name.toLowerCase()}-menu`}
-                onClick={() => {
-                  setActiveDepartment(department.name)
-                  setSelectedRoute({ department: department.name, label: department.name })
-                  setOpenDepartment(isOpen ? null : department.name)
-                }}
-              >
-                <span>{department.name}</span>
-                <span aria-hidden="true">v</span>
-              </button>
-              {isOpen && (
-                <div className="department-menu" id={`${department.name.toLowerCase()}-menu`}>
-                  <p>{department.summary}</p>
-                  <div className="department-menu-items">
-                    {department.items.map((item) => (
-                      <button
-                        type="button"
-                        className={
-                          findContentForItem(item) ? 'menu-item connected' : 'menu-item pending'
-                        }
-                        key={item.label}
-                        onClick={() => chooseDepartment(department.name, item)}
-                      >
-                        <span>{item.label}</span>
-                        <span>{item.targetName ? 'Connected' : 'Design next'}</span>
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
-          )
-        })}
-      </nav>
 
       <section className="department-summary" aria-live="polite">
         <p className="section-label">Current focus</p>
@@ -728,6 +738,7 @@ function App() {
           <span>Workspace.Read.All, Dashboard.Read.All, Report.Read.All, Dataset.Read.All</span>
         </div>
       </section>
+      </div>
     </main>
   )
 }
