@@ -173,6 +173,17 @@
   color: var(--muted);
 }
 
+.route-chip {
+  width: fit-content;
+  margin-top: 8px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  color: #0f5f6f;
+  background: rgba(22, 118, 136, 0.1);
+  font-size: 0.82rem;
+  font-weight: 800;
+}
+
 .workspace-grid {
   display: grid;
   grid-template-columns: 360px minmax(0, 1fr);
@@ -321,6 +332,67 @@ button.secondary:hover {
   color: var(--muted);
 }
 
+.template-board {
+  display: grid;
+  align-content: center;
+  min-height: 690px;
+  padding: 48px;
+  background:
+    linear-gradient(135deg, rgba(22, 118, 136, 0.1), transparent 45%),
+    linear-gradient(315deg, rgba(214, 139, 44, 0.16), transparent 45%);
+}
+
+.template-board h2 {
+  max-width: 720px;
+  margin-bottom: 12px;
+  font-size: clamp(2rem, 4vw, 4.25rem);
+  line-height: 0.96;
+}
+
+.template-board > p:not(.section-label) {
+  max-width: 720px;
+  color: var(--muted);
+}
+
+.template-callout {
+  width: fit-content;
+  max-width: 720px;
+  margin-top: 18px;
+  padding: 12px 14px;
+  border-left: 4px solid var(--amber);
+  border-radius: 6px;
+  color: var(--ink);
+  background: rgba(255, 255, 255, 0.76);
+  font-weight: 700;
+}
+
+.template-card-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 26px;
+}
+
+.template-card {
+  display: grid;
+  gap: 8px;
+  min-height: 126px;
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.84);
+}
+
+.template-card strong {
+  color: var(--ink);
+  font-size: 1rem;
+}
+
+.template-card span {
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
 .setup-strip {
   display: grid;
   grid-template-columns: 1fr 1.5fr;
@@ -360,8 +432,13 @@ button.secondary:hover {
   }
 
   .report-stage,
-  .empty-state {
+  .empty-state,
+  .template-board {
     min-height: 520px;
+  }
+
+  .template-card-grid {
+    grid-template-columns: 1fr;
   }
 
   .embed-frame {
@@ -391,6 +468,10 @@ button.secondary:hover {
   }
 
   .empty-state {
+    padding: 28px;
+  }
+
+  .template-board {
     padding: 28px;
   }
 }

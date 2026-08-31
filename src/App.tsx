@@ -77,6 +77,16 @@ type DepartmentTab = {
   items: DepartmentItem[]
 }
 
+type AppRoute = {
+  department: DepartmentName
+  label: string
+}
+
+type TemplateCard = {
+  title: string
+  detail: string
+}
+
 const departmentTabs: DepartmentTab[] = [
   {
     name: 'Parts',
@@ -109,6 +119,30 @@ const departmentTabs: DepartmentTab[] = [
     ],
   },
 ]
+
+function getTemplateCards(route: AppRoute): TemplateCard[] {
+  if (route.department === 'Technicians') {
+    return [
+      { title: 'Productivity', detail: 'Clocked hours, billed hours, and sold hours by technician.' },
+      { title: 'Efficiency', detail: 'Labor efficiency, recovery, and utilization trend cards.' },
+      { title: 'Scorecards', detail: 'Technician ranking, comebacks, and open work responsibility.' },
+    ]
+  }
+
+  if (route.department === 'Service') {
+    return [
+      { title: 'Repair orders', detail: 'Open ROs, aging, promised dates, and service advisor ownership.' },
+      { title: 'Revenue', detail: 'Labor, parts, warranty, and internal sales trend sections.' },
+      { title: 'Throughput', detail: 'Hours per RO, cycle time, and stalled work indicators.' },
+    ]
+  }
+
+  return [
+    { title: 'Inventory health', detail: 'On-hand value, aging, turns, and stocked versus special-order parts.' },
+    { title: 'Sales and margin', detail: 'Parts sales, cost, gross profit, and margin by category.' },
+    { title: 'Exceptions', detail: 'Backorders, lost sales, negative quantity, and variance alerts.' },
+  ]
+}
 
 function getInitialConfig(): ConnectionConfig {
   return {
@@ -166,6 +200,10 @@ function App() {
   const [status, setStatus] = useState('Add your Microsoft Entra app client ID to begin.')
   const [isBusy, setIsBusy] = useState(false)
   const [activeDepartment, setActiveDepartment] = useState<DepartmentName>('Parts')
+  const [selectedRoute, setSelectedRoute] = useState<AppRoute>({
+    department: 'Parts',
+    label: 'Parts Inventory',
+  })
   const [openDepartment, setOpenDepartment] = useState<DepartmentName | null>(null)
   const embedContainerRef = useRef<HTMLDivElement | null>(null)
   const powerBiServiceRef = useRef<service.Service | null>(null)
@@ -191,6 +229,7 @@ function App() {
   const activeDepartmentTab = departmentTabs.find(
     (department) => department.name === activeDepartment,
   )
+  const templateCards = getTemplateCards(selectedRoute)
   const canConnect = Boolean(config.clientId)
 
   function findContentForItem(item?: DepartmentItem) {
@@ -444,8 +483,10 @@ function App() {
 
   function chooseDepartment(departmentName: DepartmentName, item?: DepartmentItem) {
     setActiveDepartment(departmentName)
+    setSelectedRoute({ department: departmentName, label: item?.label ?? departmentName })
     setOpenDepartment(null)
     if (!item?.targetName) {
+      setSelectedContentKey('')
       setStatus(`${item?.label ?? departmentName} is ready for a custom view next.`)
       return
     }
@@ -492,6 +533,7 @@ function App() {
                 aria-controls={`${department.name.toLowerCase()}-menu`}
                 onClick={() => {
                   setActiveDepartment(department.name)
+                  setSelectedRoute({ department: department.name, label: department.name })
                   setOpenDepartment(isOpen ? null : department.name)
                 }}
               >
@@ -527,6 +569,7 @@ function App() {
         <p className="section-label">Current focus</p>
         <h2>{activeDepartment}</h2>
         <p>{activeDepartmentTab?.summary}</p>
+        <div className="route-chip">Route: {selectedRoute.department} / {selectedRoute.label}</div>
       </section>
 
       <section className="workspace-grid">
@@ -615,13 +658,26 @@ function App() {
               <div className="embed-frame" ref={embedContainerRef} />
             </>
           ) : (
-            <div className="empty-state">
-              <p className="section-label">Waiting for connection</p>
-              <h2>Set up Microsoft sign-in to display your Power BI data.</h2>
+            <div className="template-board">
+              <p className="section-label">{selectedRoute.department} template</p>
+              <h2>{selectedRoute.label}</h2>
               <p>
-                Create an app registration in Azure, add this local URL as a
-                single-page app redirect URI, then paste the client ID here.
+                This route is ready for layout design. Once a matching Power BI
+                dashboard, report, or Lightspeed export is assigned, it can be connected here.
               </p>
+              {!accessToken && (
+                <div className="template-callout">
+                  Sign in to load Miles May Power BI content. The template can be designed now.
+                </div>
+              )}
+              <div className="template-card-grid">
+                {templateCards.map((card) => (
+                  <article className="template-card" key={card.title}>
+                    <strong>{card.title}</strong>
+                    <span>{card.detail}</span>
+                  </article>
+                ))}
+              </div>
             </div>
           )}
         </section>
