@@ -927,8 +927,8 @@ button.secondary {
 
 .service-chart-row {
   display: grid;
-  grid-template-columns: minmax(440px, 1fr) minmax(440px, 1fr);
-  min-height: 396px;
+  grid-template-columns: 1fr;
+  min-height: 330px;
 }
 
 .service-chart-panel {
@@ -938,70 +938,8 @@ button.secondary {
   background: #383838;
 }
 
-.service-line-panel {
-  padding: 14px 12px 8px;
-}
-
-.service-small-filter {
-  position: absolute;
-  top: 7px;
-  left: 8px;
-  z-index: 1;
-  border-color: #060606;
-  background: #6a6a6a;
-}
-
-.service-legend {
-  display: flex;
-  gap: 10px;
-  justify-content: center;
-  color: #e8e8e8;
-  font-size: 0.74rem;
-}
-
-.service-legend span::before {
-  display: inline-block;
-  width: 10px;
-  height: 10px;
-  margin-right: 3px;
-  border-radius: 999px;
-  background: #1eef51;
-  content: '';
-}
-
-.service-legend span:nth-child(2)::before { background: #f3a000; }
-.service-legend span:nth-child(3)::before { background: #4aa2ff; }
-.service-legend span:nth-child(4)::before { background: #ff2929; }
-.service-legend span:nth-child(5)::before { background: #ffffff; }
-.service-legend span:nth-child(6)::before { background: #7fc7ff; }
-
-.service-line-panel svg {
-  width: 100%;
-  min-height: 330px;
-}
-
-.service-line-panel text {
-  fill: #dddddd;
-  font-size: 13px;
-  font-weight: 800;
-}
-
-.line {
-  fill: none;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  stroke-width: 3;
-}
-
-.line.green { stroke: #16f04b; stroke-dasharray: 2 7; }
-.line.amber { stroke: #f3a000; stroke-dasharray: 2 7; }
-.line.blue { stroke: #3e9cff; stroke-dasharray: 2 7; }
-.line.red { stroke: #ff2c2c; stroke-dasharray: 2 7; }
-.line.white { stroke: #f8f8f8; }
-.line.sky { stroke: #81c8ff; stroke-width: 2; }
-
 .service-bar-panel {
-  padding: 42px 26px 12px;
+  padding: 40px 34px 12px;
 }
 
 .service-region-filter {
@@ -1024,9 +962,9 @@ button.secondary {
 .service-bars {
   display: grid;
   grid-template-columns: repeat(10, minmax(34px, 1fr));
-  gap: 16px;
+  gap: 28px;
   align-items: end;
-  height: 326px;
+  height: 276px;
 }
 
 .service-bar-column {

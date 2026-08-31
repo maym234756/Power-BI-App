@@ -275,32 +275,6 @@ function ServiceMetricsDashboard() {
           </section>
 
           <section className="service-chart-row">
-            <article className="service-chart-panel service-line-panel">
-              <button type="button" className="service-small-filter">YTD</button>
-              <div className="service-legend" aria-label="Year legend">
-                {['2021', '2022', '2023', '2024', '2025', '2026'].map((year) => (
-                  <span key={year}>{year}</span>
-                ))}
-              </div>
-              <svg viewBox="0 0 620 330" role="img" aria-label="Labor trend by month">
-                <polyline className="line green" points="22,286 82,300 145,160 205,174 260,168 326,212 390,168 454,214 514,244 590,232" />
-                <polyline className="line amber" points="22,266 82,210 145,120 205,176 260,210 326,150 390,185 454,115 514,160 590,256" />
-                <polyline className="line blue" points="22,238 82,132 145,78 205,138 260,115 326,126 390,86 454,206 514,185 590,182" />
-                <polyline className="line red" points="22,300 82,185 145,110 205,170 260,150 326,170 390,150 454,105 514,200 590,142" />
-                <polyline className="line white" points="22,250 82,205 145,150 205,132 260,150 326,188 390,148 454,96 514,210 590,115" />
-                <polyline className="line sky" points="22,252 82,145 145,96 205,150 260,138 326,92 390,128 454,162 514,205 590,174" />
-                {serviceMonths.map((month, index) => (
-                  <text x={22 + index * 55} y="318" key={month}>{month}</text>
-                ))}
-                <text x="18" y="274">129K</text>
-                <text x="86" y="132">217K</text>
-                <text x="310" y="78">262K</text>
-                <text x="392" y="108">244K</text>
-                <text x="512" y="224">156K</text>
-                <text x="575" y="105">212K</text>
-              </svg>
-            </article>
-
             <article className="service-chart-panel service-bar-panel">
               <div className="service-region-filter">
                 <button type="button">Region</button>
