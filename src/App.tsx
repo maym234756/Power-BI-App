@@ -87,6 +87,24 @@ type TemplateCard = {
   detail: string
 }
 
+type ServiceKpi = {
+  label: string
+  value: string
+  active?: boolean
+}
+
+type ServiceMetricOption = {
+  label: string
+  value: string
+  active?: boolean
+}
+
+type ServiceMonthlyRow = {
+  year: string
+  months: string[]
+  total: string
+}
+
 const departmentTabs: DepartmentTab[] = [
   {
     name: 'Parts',
@@ -122,6 +140,245 @@ const metricTiles = [
   { label: 'Parts', value: '1.4M' },
   { label: 'Profit', value: '2.4M' },
 ]
+
+const serviceMetricOptions: ServiceMetricOption[] = [
+  { label: 'RO#', value: '3K' },
+  { label: 'Hours', value: '13K' },
+  { label: 'Labor', value: '1.6M', active: true },
+  { label: 'Parts', value: '1.5M' },
+  { label: 'OTC', value: '929K' },
+  { label: 'Revenue', value: '4.0M' },
+  { label: 'Profit', value: '2.5M' },
+  { label: 'Parts %', value: '37.5%' },
+  { label: 'Labor / RO', value: '642' },
+  { label: 'Parts / RO', value: '575' },
+  { label: 'Total / RO', value: '2K' },
+  { label: 'Hours / RO', value: '5' },
+  { label: 'Billable Labor', value: '3.0%' },
+  { label: 'OTC Profit', value: '347K' },
+  { label: 'OTC %', value: '37.3%' },
+  { label: 'Days In Service', value: '181' },
+  { label: 'Boat Sales', value: '54.1M' },
+]
+
+const serviceTopKpis: ServiceKpi[] = [
+  { label: 'E', value: '1.6M', active: true },
+  { label: 'I', value: '1.5M' },
+  { label: 'AL', value: '128K' },
+  { label: 'ETX', value: '455K' },
+  { label: 'MS', value: '375K' },
+  { label: 'STX', value: '668K' },
+  { label: 'BMT', value: '146K' },
+  { label: 'HOU', value: '214K' },
+  { label: 'JSP', value: '95K' },
+  { label: 'AP', value: '302K' },
+  { label: 'CC', value: '240K' },
+  { label: 'SA', value: '125K' },
+  { label: 'OS', value: '246K' },
+  { label: 'GP', value: '129K' },
+  { label: 'DA', value: '81K' },
+  { label: 'FOL', value: '48K' },
+]
+
+const serviceMonths = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug']
+
+const serviceAnnualTotals = [
+  { year: '21', value: '1.9M', change: '19%', height: '56%' },
+  { year: '22', value: '2.2M', change: '16%', height: '71%' },
+  { year: '23', value: '2.3M', change: '8%', height: '77%' },
+  { year: '24', value: '2.3M', change: '-1%', height: '73%' },
+  { year: '25', value: '2.4M', change: '2%', height: '80%' },
+  { year: '26', value: '1.6M', change: '5%', height: '49%' },
+]
+
+const serviceMonthlyRows: ServiceMonthlyRow[] = [
+  { year: '2026', months: ['118K', '182K', '217K', '212K', '195K', '219K', '262K', '221K'], total: '1.6M' },
+  { year: '2025', months: ['129K', '154K', '205K', '216K', '209K', '184K', '202K', '244K'], total: '2.4M' },
+  { year: '2024', months: ['92K', '174K', '227K', '190K', '197K', '210K', '191K', '254K'], total: '2.3M' },
+  { year: '2023', months: ['145K', '197K', '234K', '209K', '231K', '224K', '162K', '244K'], total: '2.3M' },
+  { year: '2022', months: ['124K', '160K', '217K', '201K', '177K', '208K', '189K', '218K'], total: '2.2M' },
+  { year: '2021', months: ['122K', '109K', '179K', '171K', '137K', '153K', '181K', '162K'], total: '1.9M' },
+]
+
+const serviceStoreBars = [
+  { label: 'AP', value: '302K', change: '3%', height: '92%', tone: 'bad' },
+  { label: 'OS', value: '246K', change: '4%', height: '75%', tone: 'good' },
+  { label: 'CC', value: '240K', change: '4%', height: '73%', tone: 'good' },
+  { label: 'HOU', value: '214K', change: '16%', height: '65%', tone: 'good' },
+  { label: 'BMT', value: '146K', change: '66%', height: '45%', tone: 'good' },
+  { label: 'GP', value: '129K', change: '53%', height: '39%', tone: 'good' },
+  { label: 'SA', value: '125K', change: '-3%', height: '38%', tone: 'bad' },
+  { label: 'JSP', value: '95K', change: '18%', height: '29%', tone: 'good' },
+  { label: 'DA', value: '81K', change: '-21%', height: '25%', tone: 'bad' },
+  { label: 'FOL', value: '48K', change: '87%', height: '15%', tone: 'good' },
+]
+
+function ServiceMetricsDashboard() {
+  return (
+    <section className="service-metrics-dashboard" aria-label="Service Metrics dashboard">
+      <header className="service-metrics-header">
+        <div className="service-metrics-brand">
+          <strong>Premier</strong>
+          <span>Yamaha</span>
+          <small>Boat Centers</small>
+        </div>
+        <h2>Service</h2>
+        <div className="service-top-kpis" aria-label="Service store totals">
+          {serviceTopKpis.map((kpi) => (
+            <button
+              type="button"
+              className={kpi.active ? 'service-top-kpi active' : 'service-top-kpi'}
+              key={kpi.label}
+            >
+              <strong>{kpi.label}</strong>
+              <span>{kpi.value}</span>
+            </button>
+          ))}
+        </div>
+        <div className="service-month-tabs" aria-label="Service month filters">
+          {serviceMonths.map((month) => (
+            <button type="button" key={month}>
+              {month}
+            </button>
+          ))}
+        </div>
+      </header>
+
+      <div className="service-dashboard-grid">
+        <aside className="service-metric-selector" aria-label="Select metric">
+          <div>Select Metric</div>
+          {serviceMetricOptions.map((metric) => (
+            <button
+              type="button"
+              className={metric.active ? 'service-metric-option active' : 'service-metric-option'}
+              key={metric.label}
+            >
+              <span>{metric.label}</span>
+              <strong>{metric.value}</strong>
+            </button>
+          ))}
+        </aside>
+
+        <div className="service-dashboard-main">
+          <div className="service-year-tabs" aria-label="Service year filters">
+            {['2023', '2024', '2025', '2026'].map((year) => (
+              <button type="button" className={year === '2026' ? 'active' : undefined} key={year}>
+                {year}
+              </button>
+            ))}
+          </div>
+
+          <section className="service-headline-panel">
+            <h3>Labor</h3>
+            <strong>1.6M</strong>
+            <span>PY: 1.5M (+.1M +5.5%)</span>
+          </section>
+
+          <section className="service-chart-row">
+            <article className="service-chart-panel service-line-panel">
+              <button type="button" className="service-small-filter">YTD</button>
+              <div className="service-legend" aria-label="Year legend">
+                {['2021', '2022', '2023', '2024', '2025', '2026'].map((year) => (
+                  <span key={year}>{year}</span>
+                ))}
+              </div>
+              <svg viewBox="0 0 620 330" role="img" aria-label="Labor trend by month">
+                <polyline className="line green" points="22,286 82,300 145,160 205,174 260,168 326,212 390,168 454,214 514,244 590,232" />
+                <polyline className="line amber" points="22,266 82,210 145,120 205,176 260,210 326,150 390,185 454,115 514,160 590,256" />
+                <polyline className="line blue" points="22,238 82,132 145,78 205,138 260,115 326,126 390,86 454,206 514,185 590,182" />
+                <polyline className="line red" points="22,300 82,185 145,110 205,170 260,150 326,170 390,150 454,105 514,200 590,142" />
+                <polyline className="line white" points="22,250 82,205 145,150 205,132 260,150 326,188 390,148 454,96 514,210 590,115" />
+                <polyline className="line sky" points="22,252 82,145 145,96 205,150 260,138 326,92 390,128 454,162 514,205 590,174" />
+                {serviceMonths.map((month, index) => (
+                  <text x={22 + index * 55} y="318" key={month}>{month}</text>
+                ))}
+                <text x="18" y="274">129K</text>
+                <text x="86" y="132">217K</text>
+                <text x="310" y="78">262K</text>
+                <text x="392" y="108">244K</text>
+                <text x="512" y="224">156K</text>
+                <text x="575" y="105">212K</text>
+              </svg>
+            </article>
+
+            <article className="service-chart-panel service-bar-panel">
+              <div className="service-region-filter">
+                <button type="button">Region</button>
+                <button type="button" className="active">LCN</button>
+              </div>
+              <div className="service-bars" aria-label="Labor by store">
+                {serviceStoreBars.map((bar) => (
+                  <div className="service-bar-column" key={bar.label}>
+                    <span>{bar.value}</span>
+                    <small>{bar.change}</small>
+                    <div
+                      className={bar.tone === 'bad' ? 'service-bar bad' : 'service-bar'}
+                      style={{ height: bar.height }}
+                    />
+                    <strong>{bar.label}</strong>
+                  </div>
+                ))}
+              </div>
+            </article>
+          </section>
+
+          <section className="service-bottom-row">
+            <article className="service-chart-panel service-annual-panel">
+              <h4>Annual</h4>
+              <div className="service-annual-bars">
+                {serviceAnnualTotals.map((year) => (
+                  <div className="service-annual-column" key={year.year}>
+                    <span>{year.value}</span>
+                    <small>{year.change}</small>
+                    <div style={{ height: year.height }} />
+                    <strong>{year.year}</strong>
+                  </div>
+                ))}
+              </div>
+            </article>
+
+            <article className="service-chart-panel service-monthly-panel">
+              <h4>Monthly</h4>
+              <table>
+                <thead>
+                  <tr>
+                    <th>Year</th>
+                    {serviceMonths.map((month) => <th key={month}>{month}</th>)}
+                    <th>Total</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {serviceMonthlyRows.map((row) => (
+                    <tr key={row.year}>
+                      <th>{row.year}</th>
+                      {row.months.map((month, index) => <td key={`${row.year}-${serviceMonths[index]}`}>{month}</td>)}
+                      <td>{row.total}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </article>
+
+            <article className="service-chart-panel service-allocation-panel">
+              <h4>Allocation</h4>
+              <div className="service-donut" aria-label="Labor allocation by store" />
+              <div className="service-donut-labels">
+                <span>AP 19%</span>
+                <span>OS 15%</span>
+                <span>CC 15%</span>
+                <span>HOU 13%</span>
+                <span>BMT 9%</span>
+                <span>GP 8%</span>
+                <span>SA 8%</span>
+                <span>JSP 6%</span>
+              </div>
+            </article>
+          </section>
+        </div>
+      </div>
+    </section>
+  )
+}
 
 function getTemplateCards(route: AppRoute): TemplateCard[] {
   if (route.department === 'Service') {
@@ -227,6 +484,8 @@ function App() {
   )
   const templateCards = getTemplateCards(selectedRoute)
   const canConnect = Boolean(config.clientId)
+  const isServiceMetricsRoute =
+    selectedRoute.department === 'Service' && selectedRoute.label === 'Service Metrics'
 
   function findContentForItem(item?: DepartmentItem) {
     if (!item?.targetName) {
@@ -565,6 +824,10 @@ function App() {
       </aside>
 
       <div className="app-content">
+        {isServiceMetricsRoute ? (
+          <ServiceMetricsDashboard />
+        ) : (
+          <>
       <section className="masthead">
         <div>
           <p className="eyebrow">Premier Boat Center</p>
@@ -741,6 +1004,8 @@ function App() {
           <span>Workspace.Read.All, Dashboard.Read.All, Report.Read.All, Dataset.Read.All</span>
         </div>
       </section>
+          </>
+        )}
       </div>
     </main>
   )
