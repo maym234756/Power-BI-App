@@ -711,16 +711,19 @@ button.secondary {
 
 .service-metrics-header {
   display: grid;
-  grid-template-columns: 110px 100px minmax(0, 1fr) 210px;
-  gap: 7px;
+  grid-template-columns: 110px 92px minmax(190px, auto) minmax(0, 1fr) 168px;
+  grid-template-areas:
+    'brand title primary stores months';
+  gap: 6px;
   align-items: center;
   min-height: 50px;
-  padding: 5px 10px 5px 6px;
+  padding: 5px 8px 5px 6px;
   border-bottom: 3px solid #090909;
   background: #3b3b3b;
 }
 
 .service-metrics-brand {
+  grid-area: brand;
   display: grid;
   align-content: center;
   min-height: 48px;
@@ -748,20 +751,13 @@ button.secondary {
 }
 
 .service-metrics-header h2 {
+  grid-area: title;
   margin: 0;
   border-left: 2px solid #a0a0a0;
   padding-left: 10px;
   color: #f3f3f3;
   font-size: 1.72rem;
   font-weight: 400;
-}
-
-.service-top-kpis {
-  display: flex;
-  flex-wrap: nowrap;
-  gap: 12px;
-  align-items: center;
-  min-width: 0;
 }
 
 .service-top-kpi-group {
@@ -772,6 +768,7 @@ button.secondary {
 }
 
 .service-top-kpi-primary {
+  grid-area: primary;
   padding: 3px 6px;
   border: 1px solid #0b0b0b;
   background: #202020;
@@ -779,7 +776,9 @@ button.secondary {
 }
 
 .service-top-kpi-stores {
+  grid-area: stores;
   min-width: 0;
+  overflow: hidden;
 }
 
 .service-top-kpi,
@@ -798,8 +797,8 @@ button.secondary {
 
 .service-top-kpi {
   display: grid;
-  flex: 0 0 46px;
-  width: 46px;
+  flex: 1 1 0;
+  min-width: 38px;
   box-sizing: border-box;
   min-height: 36px;
   gap: 1px;
@@ -838,8 +837,9 @@ button.secondary {
 }
 
 .service-month-tabs {
+  grid-area: months;
   display: grid;
-  grid-template-columns: repeat(6, minmax(0, 1fr));
+  grid-template-columns: repeat(6, 1fr);
   gap: 3px;
   align-content: center;
 }
