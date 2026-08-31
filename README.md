@@ -43,6 +43,6 @@ When you click **Sign in to Power BI**, the app redirects the current browser ta
 
 - This starter uses the Power BI "user owns data" pattern. The person signing in must already have access to the workspace and report.
 - The app is intentionally locked to the `Miles May` workspace for the `PBC & OMG Parts and Service` app work. It does not offer other workspaces in the UI.
-- The Parts and Service dropdowns are wired to the `Parts Inventory` and `PY&OMG Service` dashboards when those are available in `Miles May`.
+- The visual shell is intentionally scoped to Parts and Service only. The Parts and Service dropdowns are wired to the `Parts Inventory` and `PY&OMG Service` dashboards when those are available in `Miles May`.
 - No client secret belongs in this app. Browser apps use public client sign-in.
 - Your organization may require a Power BI Pro or Premium Per User license, or backed capacity, depending on the content you embed.

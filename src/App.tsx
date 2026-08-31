@@ -63,7 +63,7 @@ type ConnectionConfig = {
   tenantId: string
 }
 
-type DepartmentName = 'Parts' | 'Service' | 'Technicians'
+type DepartmentName = 'Parts' | 'Service'
 
 type DepartmentItem = {
   label: string
@@ -108,27 +108,21 @@ const departmentTabs: DepartmentTab[] = [
       { label: 'RO aging' },
     ],
   },
-  {
-    name: 'Technicians',
-    summary: 'Productivity, efficiency, billed hours, and technician scorecards.',
-    items: [
-      { label: 'Tech scorecards' },
-      { label: 'Efficiency' },
-      { label: 'Billed hours' },
-      { label: 'Clocked time' },
-    ],
-  },
+]
+
+const topNavigation = ['All', 'Parts', 'Service']
+
+const dealerTiles = ['PBC', 'OMG', 'LCN', 'AL', 'ETX', 'MS', 'STX']
+
+const metricTiles = [
+  { label: 'ROs', value: '2K' },
+  { label: 'Hours', value: '12K' },
+  { label: 'Labor', value: '1.6M' },
+  { label: 'Parts', value: '1.4M' },
+  { label: 'Profit', value: '2.4M' },
 ]
 
 function getTemplateCards(route: AppRoute): TemplateCard[] {
-  if (route.department === 'Technicians') {
-    return [
-      { title: 'Productivity', detail: 'Clocked hours, billed hours, and sold hours by technician.' },
-      { title: 'Efficiency', detail: 'Labor efficiency, recovery, and utilization trend cards.' },
-      { title: 'Scorecards', detail: 'Technician ranking, comebacks, and open work responsibility.' },
-    ]
-  }
-
   if (route.department === 'Service') {
     return [
       { title: 'Repair orders', detail: 'Open ROs, aging, promised dates, and service advisor ownership.' },
@@ -504,19 +498,43 @@ function App() {
 
   return (
     <main className="app-shell">
+      <nav className="top-ribbon" aria-label="Primary app areas">
+        {topNavigation.map((item) => (
+          <span className={item === activeDepartment ? 'top-link active' : 'top-link'} key={item}>
+            {item}
+          </span>
+        ))}
+      </nav>
+
       <section className="masthead">
         <div>
-          <p className="eyebrow">Power BI app project</p>
-          <h1>Your reports, inside your own React app.</h1>
+          <p className="eyebrow">Premier Boat Center</p>
+          <h1>{targetAppName}</h1>
           <p className="lede">
-            Connect with Microsoft sign-in, browse the workspaces you can access,
-            and embed a report from Power BI Service.
+            Custom Parts and Service command center for the Miles May workspace.
           </p>
         </div>
         <div className="status-panel" aria-live="polite">
           <span className={accessToken ? 'status-dot connected' : 'status-dot'} />
           <p>{status}</p>
         </div>
+      </section>
+
+      <section className="scoreboard" aria-label="Parts and service metric shortcuts">
+        {metricTiles.map((tile) => (
+          <div className="score-tile" key={tile.label}>
+            <span>{tile.label}</span>
+            <strong>{tile.value}</strong>
+          </div>
+        ))}
+      </section>
+
+      <section className="dealer-strip" aria-label="Dealer filters">
+        {dealerTiles.map((dealer) => (
+          <span className={dealer === 'LCN' ? 'dealer-pill active' : 'dealer-pill'} key={dealer}>
+            {dealer}
+          </span>
+        ))}
       </section>
 
       <nav className="department-tabs" aria-label="Parts and service app sections">
@@ -574,6 +592,11 @@ function App() {
 
       <section className="workspace-grid">
         <aside className="control-panel">
+          <div className="panel-brand">
+            <span className="brand-mark">PBC</span>
+            <strong>{activeDepartment}</strong>
+            <span>{targetWorkspaceName}</span>
+          </div>
           <div className="panel-section">
             <p className="section-label">1. App registration</p>
             <label htmlFor="client-id">Application client ID</label>
@@ -610,6 +633,18 @@ function App() {
 
           <div className="panel-section">
             <p className="section-label">3. App content</p>
+            <div className="metric-list" aria-label="Metric shortcuts">
+              {metricTiles.map((tile) => (
+                <button
+                  type="button"
+                  className={tile.label === 'Profit' ? 'metric-button active' : 'metric-button'}
+                  key={tile.label}
+                >
+                  <span>{tile.label}</span>
+                  <strong>{tile.value}</strong>
+                </button>
+              ))}
+            </div>
             <label htmlFor="workspace">Workspace</label>
             <select
               id="workspace"

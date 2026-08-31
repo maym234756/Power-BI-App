@@ -1,21 +1,18 @@
 :root {
-  --ink: #172022;
-  --muted: #536466;
-  --steel: #667477;
-  --paper: #f5f2ea;
-  --line: #d7dedc;
-  --teal: #167688;
-  --green: #238f65;
-  --amber: #d68b2c;
-  --shadow: 0 18px 45px rgba(35, 45, 46, 0.1);
+  --app-bg: #171717;
+  --panel: #252525;
+  --panel-border: #4b4b4b;
+  --text: #f3f3f3;
+  --muted: #a9a9a9;
+  --danger: #ff1f1f;
+  --good: #76f784;
+  --warning: #ffbe42;
 
-  font-family: Aptos, 'Trebuchet MS', sans-serif;
-  line-height: 1.45;
+  font-family: Aptos, 'Segoe UI', sans-serif;
+  line-height: 1.35;
   font-weight: 400;
-  color: var(--ink);
-  background:
-    radial-gradient(circle at 10% 0%, rgba(22, 118, 136, 0.18), transparent 30%),
-    linear-gradient(135deg, #f7f4ec 0%, #eef5f2 52%, #f3eadc 100%);
+  color: var(--text);
+  background: var(--app-bg);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -26,6 +23,7 @@ body {
   min-width: 320px;
   min-height: 100svh;
   margin: 0;
+  background: var(--app-bg);
 }
 
 button,
@@ -42,15 +40,9 @@ p {
 
 h1,
 h2 {
-  color: var(--ink);
-  font-family: Georgia, Cambria, serif;
-  font-weight: 700;
+  font-family: Aptos, 'Segoe UI', sans-serif;
+  font-weight: 900;
   letter-spacing: 0;
-}
-
-h1 {
-  font-size: clamp(2.6rem, 6vw, 6.8rem);
-  line-height: 0.92;
 }
 
 button,
