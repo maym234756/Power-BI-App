@@ -102,10 +102,13 @@ const departmentTabs: DepartmentTab[] = [
     name: 'Service',
     summary: 'Repair order flow, revenue, labor recovery, and service aging.',
     items: [
-      { label: 'PY&OMG Service', targetName: 'PY&OMG Service', kind: 'dashboard' },
-      { label: 'Repair orders' },
-      { label: 'Revenue trends' },
-      { label: 'RO aging' },
+      { label: 'Service Metrics', targetName: 'PY&OMG Service', kind: 'dashboard' },
+      { label: 'Efficiency Calendar' },
+      { label: 'Service Efficiency' },
+      { label: 'Cashiered Detail' },
+      { label: 'Service Logged' },
+      { label: 'RO Aging' },
+      { label: 'Timeclock' },
     ],
   },
 ]
@@ -477,7 +480,7 @@ function App() {
   function chooseDepartment(departmentName: DepartmentName, item?: DepartmentItem) {
     setActiveDepartment(departmentName)
     setSelectedRoute({ department: departmentName, label: item?.label ?? departmentName })
-    setOpenDepartment(null)
+    setOpenDepartment(departmentName)
     if (!item?.targetName) {
       setSelectedContentKey('')
       setStatus(`${item?.label ?? departmentName} is ready for a custom view next.`)
